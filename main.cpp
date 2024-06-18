@@ -1,11 +1,10 @@
 #include <Novice.h>
-#include <math.h> // 距離計算のために使用
 
 const char kWindowTitle[] = "GC2A_02_アリマ_ナオト";
 
-struct Circle {
-    float x, y; // 中心座標
-    float radius; // 半径
+struct Rect {
+    float x, y; // 左上の座標
+    float width, height; // 幅と高さ
     unsigned int color; // 色
 };
 
@@ -19,11 +18,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     char keys[256] = { 0 };
     char preKeys[256] = { 0 };
 
-    // 円の初期化
-    Circle circles[3] = {
-        { 300, 300, 100, WHITE },
-        { 600, 300, 100, WHITE },
-        { 900, 300, 100, WHITE }
+    // 短形の初期化
+    Rect rectangles[3] = {
+        { 200, 200, 100, 100, WHITE },
+        { 400, 200, 100, 100, WHITE },
+        { 600, 200, 100, 100, WHITE }
     };
 
     // ウィンドウの×ボタンが押されるまでループ
@@ -39,16 +38,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
         int mouseX, mouseY;
         Novice::GetMousePosition(&mouseX, &mouseY);
 
-        // マウスが円の内部にあるか判定
+        // マウスが短形の内部にあるか判定
         for (int i = 0; i < 3; i++) {
-            float dx = mouseX - circles[i].x;
-            float dy = mouseY - circles[i].y;
-            float distance = sqrtf(dx * dx + dy * dy);
-            if (distance <= circles[i].radius) {
-                circles[i].color = RED; // マウスが円の内部にある場合は赤色に変更
+            if (mouseX >= rectangles[i].x && mouseX <= rectangles[i].x + rectangles[i].width &&
+                mouseY >= rectangles[i].y && mouseY <= rectangles[i].y + rectangles[i].height) {
+                rectangles[i].color = RED; // マウスが短形の内部にある場合は赤色に変更
             }
             else {
-                circles[i].color = WHITE; // マウスが円の内部にない場合は白色に戻す
+                rectangles[i].color = WHITE; // マウスが短形の内部にない場合は白色に戻す
             }
         }
 
@@ -56,9 +53,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
         /// ↓描画処理ここから
         ///
 
-        // 円を描画
+        // 短形を描画
         for (int i = 0; i < 3; i++) {
-            Novice::DrawEllipse((int)circles[i].x, (int)circles[i].y, (int)circles[i].radius, (int)circles[i].radius, 0.0f, circles[i].color, kFillModeSolid);
+            Novice::DrawBox((int)rectangles[i].x, (int)rectangles[i].y,
+                (int)rectangles[i].width, (int)rectangles[i].height,
+                0.0f, rectangles[i].color, kFillModeSolid);
         }
 
         ///
