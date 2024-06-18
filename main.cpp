@@ -1,15 +1,6 @@
 #include <Novice.h>
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 const char kWindowTitle[] = "GC2A_02_アリマ_ナオト";
-
-struct Circle {
-    float x, y; // 中心座標
-    float radius; // 半径
-    unsigned int color; // 色
-    bool isMoving; // 円が動いているかどうか
-};
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
